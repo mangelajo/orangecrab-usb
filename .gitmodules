@@ -1,0 +1,3 @@
+[submodule "libs/FPGA-USB-Device"]
+	path = libs/FPGA-USB-Device
+	url = git@github.com:WangXuan95/FPGA-USB-Device.git

@@ -1,0 +1,16 @@
+PROJ=fpga_top_usb_audio
+TOP_MODULE=fpga_top_usb_audio
+FPGA_USB_D=ip/FPGA-USB-Device/RTL
+
+PLL_FNAME=ip/pll
+VERILOG_FILES=$(PLL_FNAME).v \
+				hdl/clkdiv.v hdl/i2s.v \
+				$(FPGA_USB_D)/usbfs_core/*.v \
+				$(FPGA_USB_D)/usb_class/usb_audio_top.v \
+				hdl/${TOP_MODULE}.v
+
+
+SYNTH_FLAGS=-noabc9 # yosys's abc9 crashes with the FPGA-USB-Device code
+YOSYS_FLAGS=-q
+
+include common.mk
