@@ -36,7 +36,7 @@ dfu: bin/${PROJ}.dfu
 	dfu-util --alt 0 -D $<
 
 ${PLL_FNAME}.v:
-	$(IN_CONTAINER) ecppll -i 48 -o 60 -f ${PLL_FNAME}.v
+	$(IN_CONTAINER) ecppll -i 48 -o 60 -f $@
 
 # We don't actually need to do anything to verilog files.
 # This explicitly empty recipe is merely referenced from
@@ -56,7 +56,7 @@ ${PLL_FNAME}.v:
 	$(file >>$@,synth_ecp5 $(SYNTH_FLAGS) -top $(TOP_MODULE)) \
 	$(file >>$@,write_json "$(basename $@).json") \
 
-%.json: %.ys
+%.json: %.ys $(VERILOG_FILES)
 	cat "$<"
 	$(IN_CONTAINER) yosys $(YOSYS_FLAGS) -s "$<"
 
@@ -68,10 +68,10 @@ ${PLL_FNAME}.v:
 
 %.dfu : %.bit
 	$(COPY) $< $@
-	dfu-suffix -v 1209 -p 5af0 -a $@
+	$(IN_CONTAINER) dfu-suffix -v 1209 -p 5af0 -a $@
 
 clean:
-	$(RM) -f ${PROJ}.bit ${PROJ}_out.config ${PROJ}.json ${PROJ}.dfu ${PLL_FNAME}.v
+	$(RM) -f bin/${PROJ}.bit bin/${PROJ}_out.config bin/${PROJ}.json bin/${PROJ}.dfu ${PLL_FNAME}.v
 
 .PHONY: prog clean
 
