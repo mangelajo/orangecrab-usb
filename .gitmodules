@@ -1,3 +1,3 @@
-[submodule "libs/FPGA-USB-Device"]
-	path = libs/FPGA-USB-Device
-	url = git@github.com:WangXuan95/FPGA-USB-Device.git
+[submodule "ip/FPGA-USB-Device"]
+	path = ip/FPGA-USB-Device
+	url = https://github.com/WangXuan95/FPGA-USB-Device
