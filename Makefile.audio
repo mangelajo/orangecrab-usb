@@ -13,4 +13,5 @@ VERILOG_FILES=$(PLL_FNAME).v \
 SYNTH_FLAGS=-noabc9 # yosys's abc9 crashes with the FPGA-USB-Device code
 YOSYS_FLAGS=-q
 
+include container.mk
 include common.mk

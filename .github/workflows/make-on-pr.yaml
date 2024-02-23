@@ -16,8 +16,11 @@ jobs:
       with:
         submodules: 'true'
 
-    - name:
+    - name: Build camera example
       run: make
+
+    - name: Build audio example
+      run: make -f Makefile.audio
 
     - name: Archive artifacts
       uses: actions/upload-artifact@v4
