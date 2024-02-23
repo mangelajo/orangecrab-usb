@@ -36,7 +36,7 @@ dfu: bin/${PROJ}.dfu
 	dfu-util --alt 0 -D $<
 
 ${PLL_FNAME}.v:
-	ecppll -i 48 -o 60 -f ${PLL_FNAME}.v
+	$(IN_CONTAINER) ecppll -i 48 -o 60 -f ${PLL_FNAME}.v
 
 # We don't actually need to do anything to verilog files.
 # This explicitly empty recipe is merely referenced from
@@ -58,13 +58,13 @@ ${PLL_FNAME}.v:
 
 %.json: %.ys
 	cat "$<"
-	yosys $(YOSYS_FLAGS) -s "$<"
+	$(IN_CONTAINER) yosys $(YOSYS_FLAGS) -s "$<"
 
 %_out.config: %.json
-	nextpnr-ecp5 --json $< --textcfg $@ $(NEXTPNR_DENSITY) --package CSFBGA285 --lpf synthesis/orangecrab_${VERSION}.pcf
+	$(IN_CONTAINER) nextpnr-ecp5 --json $< --textcfg $@ $(NEXTPNR_DENSITY) --package CSFBGA285 --lpf synthesis/orangecrab_${VERSION}.pcf
 
 %.bit: %_out.config
-	ecppack --compress --freq 38.8 --input $< --bit $@
+	$(IN_CONTAINER) ecppack --compress --freq 38.8 --input $< --bit $@
 
 %.dfu : %.bit
 	$(COPY) $< $@
