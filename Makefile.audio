@@ -4,7 +4,7 @@ FPGA_USB_D=ip/FPGA-USB-Device/RTL
 
 PLL_FNAME=ip/pll
 VERILOG_FILES=$(PLL_FNAME).v \
-				hdl/clkdiv.v hdl/i2s.v \
+				hdl/clkdiv/clkdiv.v hdl/i2s/i2s.v \
 				$(FPGA_USB_D)/usbfs_core/*.v \
 				$(FPGA_USB_D)/usb_class/usb_audio_top.v \
 				hdl/${TOP_MODULE}.v
@@ -15,3 +15,14 @@ YOSYS_FLAGS=-q
 
 include container.mk
 include common.mk
+
+
+test-clkdiv:
+	$(IN_CONTAINER) sh -c "cd hdl/clkdiv && make"
+
+test-i2s:
+	$(IN_CONTAINER) sh -c "cd hdl/i2s && make"
+
+test: test-clkdiv test-i2s
+
+.PHONY: test test-clkdiv test-i2s

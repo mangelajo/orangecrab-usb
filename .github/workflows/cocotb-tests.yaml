@@ -1,0 +1,27 @@
+name: Testing verilog
+
+on:
+  pull_request:
+    branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'true'
+
+    - name: Test HDL with cocotb tests
+      run: make -f Makefile.audio test
+
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: outputs
+        path: |
+          hdl/*/results.xml
